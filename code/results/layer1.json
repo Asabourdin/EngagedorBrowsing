@@ -1,0 +1,19 @@
+{
+  "posterior": {
+    "mean": 0.4184643346642036,
+    "low": 0.41473480508996796,
+    "high": 0.42219846627667657
+  },
+  "context_rates": {
+    "organic": 0.4452894336584057,
+    "recommendation": 0.3916951927370144
+  },
+  "probability_recommendation_higher": 0.0,
+  "observed_checks": {
+    "spread of skip rates": 0.35839705054950854,
+    "gap after a skip": 0.6133588888834315,
+    "longest run of skips": 4.773064441353732
+  },
+  "score_one_rate": -0.6782364957241058,
+  "score_by_context": -0.676696026174619
+}
