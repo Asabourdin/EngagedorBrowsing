@@ -1,8 +1,6 @@
 """General tools shared by Layers 2 and 3
-
-These functions do not know which model they work on
 A prior is a dict {parameter name: (alpha, beta)} of Beta priors
-A log-odds vector phi holds the parameters in the order given by `names`
+A log-odds vector phi holds the parameters in the order given by names
 """
 
 import numpy as np
