@@ -1,0 +1,17 @@
+[project]
+name = "engagedorbrowsing"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "anastasiamgz", email = "b00813991@essec.edu" }
+]
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+engagedorbrowsing = "engagedorbrowsing:main"
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"
