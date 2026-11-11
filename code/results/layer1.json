@@ -1,8 +1,8 @@
 {
   "posterior": {
     "mean": 0.4184643346642036,
-    "low": 0.41473480508996796,
-    "high": 0.42219846627667657
+    "low": 0.4147348050899669,
+    "high": 0.42219846627667795
   },
   "context_rates": {
     "organic": 0.4452894336584057,
@@ -12,8 +12,55 @@
   "observed_checks": {
     "spread of skip rates": 0.35839705054950854,
     "gap after a skip": 0.6133588888834315,
-    "longest run of skips": 4.773064441353732
+    "longest run of skips": 4.773064441353732,
+    "gap after shuffling": 0.5120581510201385,
+    "within-session gap": 0.10130073786329297,
+    "skip/play changes": 2.7415391747797866
   },
-  "score_one_rate": -0.6782364957241058,
-  "score_by_context": -0.676696026174619
+  "predictive_checks": {
+    "spread of skip rates": {
+      "real data": 0.35839705054950854,
+      "simulated mean": 0.12943296719354666,
+      "simulated 2.5%": 0.1267669737254222,
+      "simulated 97.5%": 0.13226044372236292,
+      "share at least as large": 0.0
+    },
+    "gap after a skip": {
+      "real data": 0.6133588888834315,
+      "simulated mean": -5.3599734193527595e-05,
+      "simulated 2.5%": -0.007718275773616401,
+      "simulated 97.5%": 0.007796262875008532,
+      "share at least as large": 0.0
+    },
+    "longest run of skips": {
+      "real data": 4.773064441353732,
+      "simulated mean": 2.732883402874362,
+      "simulated 2.5%": 2.6863641631896154,
+      "simulated 97.5%": 2.779560732498841,
+      "share at least as large": 0.0
+    },
+    "gap after shuffling": {
+      "real data": 0.5120581510201385,
+      "simulated mean": -1.0849440385330818e-05,
+      "simulated 2.5%": -0.0031480798697230868,
+      "simulated 97.5%": 0.003169398019084278,
+      "share at least as large": 0.0
+    },
+    "within-session gap": {
+      "real data": 0.10130073786329297,
+      "simulated mean": -4.2750293808196836e-05,
+      "simulated 2.5%": -0.007777812724404939,
+      "simulated 97.5%": 0.007565110759278645,
+      "share at least as large": 0.0
+    },
+    "skip/play changes": {
+      "real data": 2.7415391747797866,
+      "simulated mean": 7.085861149745017,
+      "simulated 2.5%": 7.021783727399166,
+      "simulated 97.5%": 7.146117292535929,
+      "share at least as large": 1.0
+    }
+  },
+  "score_one_rate": -0.6782364957241057,
+  "score_by_context": -0.6766960261746191
 }
