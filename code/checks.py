@@ -87,3 +87,56 @@ def average_log_score(skip_probabilities, skips, mask):
     probability_of_truth = np.where(skips == 1, skip_probabilities,
                                     1 - skip_probabilities)
     return np.log(probability_of_truth[mask]).mean()
+
+# The real data and every simulated data set use the same number of shuffles,
+# so the observed and the simulated statistics are computed in the same way
+N_SHUFFLES = 20
+
+
+def shuffle_within_sessions(skips, mask, rng):
+    """Shuffle the tracks inside each session, keeping each session's skips"""
+    # Give each track a random key and sort the keys of each row
+    # Empty cells get the key +inf, so they stay at the end of the row
+    keys = rng.random(skips.shape)
+    keys[~mask] = np.inf
+    order = np.argsort(keys, axis=1)
+    return np.take_along_axis(skips, order, axis=1)
+
+
+def shuffled_gap(skips, mask, rng, n_shuffles=N_SHUFFLES):
+    """Return the gap after a skip, as a mean over several shuffles"""
+    # Shuffling destroys the order inside sessions but keeps the differences
+    # between sessions, so this is the part of the gap due to session differences
+    gaps = [gap_after_skip(shuffle_within_sessions(skips, mask, rng), mask)
+            for _ in range(n_shuffles)]
+    return np.mean(gaps)
+
+
+def within_session_gap(skips, mask, rng, n_shuffles=N_SHUFFLES):
+    """Return the gap after a skip minus the gap after shuffling"""
+    # The part of the gap that comes from the order of tracks inside sessions
+    return gap_after_skip(skips, mask) - shuffled_gap(skips, mask, rng, n_shuffles)
+
+
+def mean_switches(skips, mask):
+    """Return the mean number of skip/play changes per session"""
+    changes = (skips[:, 1:] != skips[:, :-1]) & mask[:, 1:]
+    return changes.sum(axis=1).mean()
+
+
+def all_checks(skips, mask, rng, n_shuffles=N_SHUFFLES):
+    """Return the three session checks, the shuffled gap and two within-session statistics"""
+    gap = gap_after_skip(skips, mask)
+    # Shuffle once and use the result twice, so both numbers come from the same shuffles
+    shuffled = shuffled_gap(skips, mask, rng, n_shuffles)
+    return {
+        **session_checks(skips, mask),
+        "gap after shuffling": shuffled,
+        "within-session gap": gap - shuffled,
+        "skip/play changes": mean_switches(skips, mask),
+    }
+
+
+def real_data_checks(skips, mask, seed=2026, n_shuffles=N_SHUFFLES):
+    """Return all_checks on the real data with a fixed seed, the same in every layer"""
+    return all_checks(skips, mask, np.random.default_rng(seed), n_shuffles)

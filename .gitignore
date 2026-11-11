@@ -1,3 +1,8 @@
 .venv/
 __pycache__/
 *.pyc
+code/layer2_session_types.ipynb
+code/layer1_baseline.ipynb
+code/layer1_baseline.ipynb
+.gitignore
+code/session_types.py
