@@ -2,5 +2,4 @@
 __pycache__/
 *.pyc
 code/layer2_session_types.ipynb
-.gitignore
-code/session_types.py
+
