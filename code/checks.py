@@ -88,33 +88,35 @@ def average_log_score(skip_probabilities, skips, mask):
                                     1 - skip_probabilities)
     return np.log(probability_of_truth[mask]).mean()
 
-# The real data and every simulated data set use the same number of shuffles,
-# so the observed and the simulated statistics are computed in the same way
+# The real data and every simulated data set use the same number of shuffles, so the observed and the simulated statistics are computed in the same way
 N_SHUFFLES = 20
 
-
 def shuffle_within_sessions(skips, mask, rng):
-    """Shuffle the tracks inside each session, keeping each session's skips"""
+    """Shuffle the tracks within each session"""
     # Give each track a random key and sort the keys of each row
-    # Empty cells get the key +inf, so they stay at the end of the row
+    # Empty cells get the key +inf, so they stay at the end of the row (pour le mask)
     keys = rng.random(skips.shape)
-    keys[~mask] = np.inf
-    order = np.argsort(keys, axis=1)
+    keys = np.where(mask, keys, np.inf)   # where a track exists, keep its random key while in empty cells, put +infinity
+    order = np.argsort(keys, axis=1)    
+
     return np.take_along_axis(skips, order, axis=1)
 
 
 def shuffled_gap(skips, mask, rng, n_shuffles=N_SHUFFLES):
     """Return the gap after a skip, as a mean over several shuffles"""
-    # Shuffling destroys the order inside sessions but keeps the differences
-    # between sessions, so this is the part of the gap due to session differences
-    gaps = [gap_after_skip(shuffle_within_sessions(skips, mask, rng), mask)
-            for _ in range(n_shuffles)]
+    # Shuffling destroys the order inside sessions but keeps the differences between sessions, so this is the part of the gap due to session differences -> to know if it is about the session of the order or tracks wihtin a sesh
+    gaps = []
+    for i in range(n_shuffles):
+        # mix the tracks inside each session (one new random order each time)
+        shuffled = shuffle_within_sessions(skips, mask, rng)
+        # measure the gap after a skip on the shuffled table
+        gaps.append(gap_after_skip(shuffled, mask))
     return np.mean(gaps)
 
 
 def within_session_gap(skips, mask, rng, n_shuffles=N_SHUFFLES):
     """Return the gap after a skip minus the gap after shuffling"""
-    # The part of the gap that comes from the order of tracks inside sessions
+    # To check if the gap after skip comes from within the session of from the session itself
     return gap_after_skip(skips, mask) - shuffled_gap(skips, mask, rng, n_shuffles)
 
 
@@ -127,7 +129,6 @@ def mean_switches(skips, mask):
 def all_checks(skips, mask, rng, n_shuffles=N_SHUFFLES):
     """Return the three session checks, the shuffled gap and two within-session statistics"""
     gap = gap_after_skip(skips, mask)
-    # Shuffle once and use the result twice, so both numbers come from the same shuffles
     shuffled = shuffled_gap(skips, mask, rng, n_shuffles)
     return {
         **session_checks(skips, mask),
