@@ -54,11 +54,7 @@ def to_params(phi, names):
 
 def log_beta_prior_log_odds(phi, prior, names):
     """Return the log Beta prior density written on the log-odds scale"""
-    # Beta density p^(alpha-1) (1-p)^(beta-1) / B(alpha, beta), times the
-    # Jacobian dp/dphi = p (1 - p) (Ch. 2, Ch. 4 Ex. 4.1), gives
-    # p^alpha (1-p)^beta / B(alpha, beta)
-    # log_expit(phi) = log p and log_expit(-phi) = log(1 - p), computed without
-    # rounding p to exactly 0 or 1 when phi is large
+    # log_expit(phi) = log p and log_expit(-phi) = log(1 - p) computed without rounding p to exactly 0 or 1 when phi is large
     phi = np.asarray(phi)
     alpha = np.array([prior[name][0] for name in names])
     beta = np.array([prior[name][1] for name in names])
@@ -68,24 +64,12 @@ def log_beta_prior_log_odds(phi, prior, names):
 
 #  Derivatives by finite differences 
 
-def numerical_gradient(f, x, step=1e-4):
-    """Return the gradient of f at x by central differences"""
-    gradient = np.zeros(len(x))
-    for i in range(len(x)):
-        shift = np.zeros(len(x))
-        shift[i] = step
-        gradient[i] = (f(x + shift) - f(x - shift)) / (2 * step)
-    return gradient
-
-
 def numerical_hessian(f, x, step=1e-3):
     """Return the matrix of second derivatives of f at x by central differences"""
-    # One formula for every pair (i, j) with i <= j:
-    # [f(x+hi+hj) - f(x+hi-hj) - f(x-hi+hj) + f(x-hi-hj)] / (4 h^2)
-    # A single loop over the pairs, the lower half is a copy (symmetry)
     d = len(x)
     hessian = np.zeros((d, d))
     for i, j in zip(*np.triu_indices(d)):
+        # for every pair (i, j) with i <= j: we compute the hessian, and copy on the lower haf (cus symmetrical)
         hi = np.zeros(d)
         hj = np.zeros(d)
         hi[i] = step
@@ -100,12 +84,11 @@ def numerical_hessian(f, x, step=1e-3):
 
 def student_t_draws(center, shape, df, n, rng):
     """Draw n points from a multivariate Student-t"""
-    # Ch. 2: a Normal divided by sqrt(chi-square / df) is a Student-t
-    # L L^T = shape, so L z has covariance `shape` when z ~ N(0, I)
-    # The small chi-square values give the heavy tails
+    # A Normal divided by sqrt(chi-square / df) is a Student-t
+    # L L^T = shape, so L z has covariance = shape when z follows N(0, I)
     L = np.linalg.cholesky(shape)
     z = rng.standard_normal((n, len(center)))
-    w = rng.chisquare(df, size=n)
+    w = rng.chisquare(df, size=n)    # The small chi-square values give the heavy tails
     return center + (z @ L.T) / np.sqrt(w / df)[:, None]
 
 
@@ -131,21 +114,20 @@ def prior_draws_log_odds(prior, names, n, rng):
     return np.column_stack([logit(rng.beta(*prior[name], size=n)) for name in names])
 
 
-# Importance sampling (Ch. 3) 
+# Importance sampling 
 
 def normalized_weights(log_weights):
     """Turn log-weights into weights that sum to 1 (all 0 if no draw is valid)"""
-    # A draw outside the support (e.g. theta_e >= theta_b) has log-weight -inf
-    # If every draw is like that, there is nothing to normalize
-    if not np.isfinite(log_weights).any():
+    if not np.isfinite(log_weights).any(): #if there are draw to normalise
         return np.zeros(len(log_weights))
     # log-sum-exp: subtract the largest log-weight before exp, so nothing overflows
     return np.exp(log_weights - logsumexp(log_weights))
 
 
 def importance_sampling(log_posterior, draws, log_proposal):
-    """Weight proposal draws by posterior / proposal; return weights and diagnostics"""
-    # One loop over draws: log_posterior takes one vector at a time
+    """Weight proposal draws by posterior / proposal
+      return weights and diagnostics"""
+    # One loop over draws (cus the log posteriors work one draw at a time)
     log_target = np.array([log_posterior(phi) for phi in draws])
     log_weights = log_target - log_proposal
     weights = normalized_weights(log_weights)
@@ -163,10 +145,7 @@ def importance_sampling(log_posterior, draws, log_proposal):
 
 def importance_sampling_at_mode(log_posterior, center, n_draws, rng, df=4):
     """Importance sampling with a Student-t proposal centred at the mode, scale (-Hessian)^-1"""
-    # Near the mode the log-posterior is close to a parabola, whose curvature
-    # is the Hessian; minus its inverse is the covariance of the Normal
-    # approximation. The Student-t has the same centre and shape, with heavier
-    # tails than the target (Ch. 3, Prop. 3.3)
+    #The Student-t has the same centre and shape than log-posterior, with heavier tails than the target 
     hessian = numerical_hessian(log_posterior, center)
     shape = np.linalg.inv(-hessian)
     draws = student_t_draws(center, shape, df, n_draws, rng)
@@ -176,17 +155,10 @@ def importance_sampling_at_mode(log_posterior, center, n_draws, rng, df=4):
     return result
 
 
-def proposal_diagnostics(log_posterior, result):
-    """Return checks of the importance sampling run: mode, Hessian and weights"""
-    center = result["center"]
-    # The Hessian should barely move when the finite-difference step is halved
-    half_step = numerical_hessian(log_posterior, center, step=5e-4)
-    change = np.abs(half_step - result["hessian"]).max() / np.abs(result["hessian"]).max()
+def proposal_diagnostics(result):
+    """Return the weight checks of an importance sampling run"""
     n_draws = len(result["draws"])
     return pd.Series({
-        "largest |gradient| at the centre": np.abs(numerical_gradient(log_posterior, center)).max(),
-        "Hessian change when the step is halved": change,
-        "smallest eigenvalue of -Hessian": np.linalg.eigvalsh(-result["hessian"]).min(),
         "draws outside the support (weight 0)": n_draws - result["n_valid"],
         "draws": n_draws,
         "ESS": result["ess"],
@@ -197,7 +169,6 @@ def proposal_diagnostics(log_posterior, result):
 
 def effective_sample_size(weights):
     """Return ESS = 1 / sum of squared normalized weights (0 if no valid draw)"""
-    # Equal weights 1/N give ESS = N; one weight of 1 gives ESS = 1 (Ch. 3)
     total = (weights ** 2).sum()
     return 0.0 if total == 0 else 1 / total
 
@@ -212,7 +183,7 @@ def weighted_quantile(values, weights, q):
 
 def monte_carlo_standard_error(values, weights):
     """Return the Monte Carlo standard error of a self-normalized weighted mean"""
-    # Delta-method formula (Robert & Casella, 2004): sqrt(sum w^2 (h - h_hat)^2)
+    # Delta-method formula: sqrt(sum w^2 (h - h_hat)^2)
     # With equal weights 1/N it is the usual sd / sqrt(N)
     estimate = (weights * values).sum()
     return np.sqrt((weights ** 2 * (values - estimate) ** 2).sum())
@@ -263,7 +234,7 @@ def weighted_correlation(result, names):
     return pd.DataFrame(covariance / np.outer(sd, sd), index=names, columns=names)
 
 
-#  Posterior predictive checks (Ch. 1) 
+#  Posterior predictive checks
 
 def predictive_checks(simulate, params_draws, lengths, rng, check):
     """For each posterior draw, simulate data with the same lengths and compute the checks"""

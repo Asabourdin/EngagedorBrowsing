@@ -25,8 +25,7 @@ def session_counts(skips, mask):
 
 def log_terms_by_type(params, n, s):
     """Return log P(type, skips) for Engaged and for Browsing, one value per session"""
-    # P(Engaged) * theta_e^s * (1 - theta_e)^(n - s), written in logs so that
-    #log to prevent underflow
+    # P(Engaged) * theta_e^s * (1 - theta_e)^(n - s), written in logs to prevent underflow
     log_engaged = (np.log(params["p0"])
                    + s * np.log(params["theta_e"])
                    + (n - s) * np.log(1 - params["theta_e"]))
@@ -90,7 +89,7 @@ def em_step(params, skips, mask, prior):
     n, s = session_counts(skips, mask)
     # E-step: how much each session belongs to the engaged behaviour 
     r = type_probabilities(params, skips, mask)
-    # M-step: Beta updates where each session counts with weight r or 1 - r
+    # M-step: the Beta mode used inside the M-step where each session counts with weight r or 1 - r
     # p0: "successes" are engaged seshs, "trials" are all sessions
     # theta: "successes" are skips, "trials" are tracks, in sessions of that type
     new = {
@@ -119,8 +118,8 @@ def random_start(rng, prior=PRIOR):
 def log_posterior(phi, skips, mask, prior=PRIOR):
     """Return the log-posterior at the log-odds vector phi"""
     params = to_params(phi, NAMES)
-    # The constraint theta_e < theta_b fixes the labels
-    # so if values are outside we set them at -inf as they have proba 0
+    # Swapping the labels changes nothing so the constraint theta_e < theta_b fixes the labels
+    # if values are outside we set their logodd to -inf as they have proba 0
     if params["theta_e"] >= params["theta_b"]:
         return -np.inf
     return log_likelihood(params, skips, mask) + log_beta_prior_log_odds(phi, prior, NAMES)
@@ -133,5 +132,5 @@ def skip_probabilities(params, skips, mask):
     n_before = np.cumsum(mask, axis=1) - mask
     log_engaged, log_browsing = log_terms_by_type(params, n_before, s_before)
     p_engaged = np.exp(log_engaged - np.logaddexp(log_engaged, log_browsing))
-    # Next track: skipped with theta_e if Engaged, theta_b if Browsing
+    # Next track: skipped with theta_e if engaged, theta_b if browsing
     return p_engaged * params["theta_e"] + (1 - p_engaged) * params["theta_b"]
