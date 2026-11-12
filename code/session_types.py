@@ -101,15 +101,12 @@ def em_step(params, skips, mask, prior):
     return relabel(new)
 
 
-def em(params, skips, mask, n_iter=1000, prior=PRIOR, tau=1e-9):
-    """Run EM and return the mode and the log-posterior at each step"""
+def em(params, skips, mask, prior, n_iter=200):
+    """Run n_iter EM steps and return the last point and the log-posterior at each step"""
     history = [log_posterior_probability_scale(params, skips, mask, prior)]
     for _ in range(n_iter):
         params = em_step(params, skips, mask, prior)
         history.append(log_posterior_probability_scale(params, skips, mask, prior))
-        # Stop when one more step changes the log-posterior by less than tau
-        if abs(history[-1] - history[-2]) < tau:
-            break
     return params, np.array(history)
 
 

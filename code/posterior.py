@@ -1,7 +1,4 @@
-"""General tools shared by Layers 2 and 3
-A prior is a dict {parameter name: (alpha, beta)} of Beta priors
-A log-odds vector phi holds the parameters in the order given by names
-"""
+"""General algos and proba tools for Layers 2 and 3"""
 
 import numpy as np
 import pandas as pd
@@ -9,27 +6,21 @@ from scipy import stats
 from scipy.special import betaln, expit, log_expit, logit, logsumexp
 
 
-#  Beta updates (EM) 
+#  Beta updates with EM algo
 
 def beta_mode(successes, trials, alpha, beta):
-    """Return the mode of the Beta posterior after `successes` out of `trials`"""
-    # The posterior is Beta(alpha + successes, beta + trials - successes) (Ch. 1)
-    # Its mode is (alpha + successes - 1) / (alpha + beta + trials - 2)
-    # In EM, successes and trials are expected counts, so they need not be whole
-    # numbers (Ch. 4, M-step with the prior as pseudo-counts)
+    """Return the mode of the Beta posterior after x successes out of y trials"""
     return (successes + alpha - 1) / (trials + alpha + beta - 2)
 
 
 def log_odds_prior(prior):
     """Return the Beta prior whose mode on the 0-1 scale is the log-odds mode"""
-    # On the log-odds scale the density gains the factor p(1 - p) (Ch. 2, Jacobian)
-    # Beta(alpha, beta) times p(1 - p) has the shape of Beta(alpha + 1, beta + 1)
-    # So EM run with this prior finds the mode on the log-odds scale
     return {name: (alpha + 1, beta + 1) for name, (alpha, beta) in prior.items()}
 
 
 def em_from_starts(em, starts, skips, mask, prior):
     """Run EM from several starts; return a table, the best mode and every history"""
+    # POUR ANA: j'ai mis em en argument comme ça tu peux l'adapter à un markov model
     rows = []
     modes = []
     histories = []
@@ -39,17 +30,16 @@ def em_from_starts(em, starts, skips, mask, prior):
         histories.append(history)
         rows.append({
             **{name: float(value) for name, value in mode.items()},
-            "iterations": len(history) - 1,
             "log-posterior": history[-1],
-            # A step down by less than 1e-9 is a rounding error, not a real decrease
-            "never decreases": bool((np.diff(history) > -1e-9).all()),
+            # EM never decreases the log-posterior so a drop can only be rounding error (0 means it never drops)
+            "largest decrease": max(0.0, float(-np.diff(history).min())),
         })
     table = pd.DataFrame(rows)
     best = modes[int(table["log-posterior"].idxmax())]
     return table, best, histories
 
 
-#  Log-odds scale 
+#  Log-odds scale to avoid underflow 
 
 def to_vector(params, names):
     """Turn a dict of probabilities into a vector of log-odds"""
