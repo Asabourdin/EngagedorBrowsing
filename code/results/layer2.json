@@ -1,70 +1,69 @@
 {
   "em_mode": {
-    "theta_e": 0.109170510229474,
-    "theta_b": 0.7646265600994231,
-    "p0": 0.5355485623162642
+    "theta_e": 0.10917055721254464,
+    "theta_b": 0.764626622470901,
+    "p0": 0.5355486481844373
   },
-  "em_iterations": [
-    34,
-    31,
-    33,
-    30,
-    32,
-    32,
-    33,
-    32,
-    33,
-    32
-  ],
   "posterior": {
     "theta_e": {
-      "mean": 0.1091822917,
-      "sd": 0.0022642248,
-      "low": 0.1047961773,
-      "median": 0.1091754303,
-      "high": 0.1136357032,
-      "mcse": 1.66038e-05
+      "mean": 0.1091822918,
+      "sd": 0.0022642249,
+      "low": 0.1047962242,
+      "median": 0.1091754773,
+      "high": 0.1136357502
     },
     "theta_b": {
-      "mean": 0.7646442062,
-      "sd": 0.0031501798,
-      "low": 0.7584400705,
-      "median": 0.7646506714,
-      "high": 0.7708082251,
-      "mcse": 2.3076e-05
+      "mean": 0.7646442061,
+      "sd": 0.0031501795,
+      "low": 0.7584401331,
+      "median": 0.7646507339,
+      "high": 0.7708082868
     },
     "p0": {
-      "mean": 0.5355996496,
-      "sd": 0.008080453,
-      "low": 0.5196533394,
-      "median": 0.5355443183,
-      "high": 0.5515570996,
-      "mcse": 5.9203e-05
+      "mean": 0.5355996515,
+      "sd": 0.0080804539,
+      "low": 0.5196534264,
+      "median": 0.5355444028,
+      "high": 0.551557185
     },
     "share of Browsing sessions": {
-      "mean": 0.4644003504,
-      "sd": 0.008080453,
-      "low": 0.4484429004,
-      "median": 0.4644556817,
-      "high": 0.4803466606,
-      "mcse": 5.9203e-05
+      "mean": 0.4644003485,
+      "sd": 0.0080804539,
+      "low": 0.448442815,
+      "median": 0.4644555972,
+      "high": 0.4803465736
     }
   },
   "correlation": {
     "theta_e": {
       "theta_e": 1.0,
-      "theta_b": 0.4354047816,
-      "p0": 0.2255293669
+      "theta_b": 0.4354046648,
+      "p0": 0.2255294134
     },
     "theta_b": {
-      "theta_e": 0.4354047816,
+      "theta_e": 0.4354046648,
       "theta_b": 1.0,
-      "p0": 0.2190597378
+      "p0": 0.2190598413
     },
     "p0": {
-      "theta_e": 0.2255293669,
-      "theta_b": 0.2190597378,
+      "theta_e": 0.2255294134,
+      "theta_b": 0.2190598413,
       "p0": 1.0
+    }
+  },
+  "monte_carlo_error": {
+    "seeds": 10,
+    "theta_e": {
+      "posterior sd": 0.0022642249,
+      "Monte Carlo error (sd over 10 seeds)": 1.83742e-05
+    },
+    "theta_b": {
+      "posterior sd": 0.0031501795,
+      "Monte Carlo error (sd over 10 seeds)": 3.23042e-05
+    },
+    "p0": {
+      "posterior sd": 0.0080804539,
+      "Monte Carlo error (sd over 10 seeds)": 6.43747e-05
     }
   },
   "importance_sampling": {
@@ -72,26 +71,17 @@
       "value": 20000.0
     },
     "df": 4,
-    "largest |gradient| at the centre": {
-      "value": 0.0007292874
-    },
-    "Hessian change when the step is halved": {
-      "value": 3.054e-07
-    },
-    "smallest eigenvalue of -Hessian": {
-      "value": 866.679618444
-    },
     "draws outside the support (weight 0)": {
       "value": 0.0
     },
     "ESS": {
-      "value": 17268.6911659251
+      "value": 17268.6869631378
     },
     "ESS share": {
-      "value": 0.8634345583
+      "value": 0.8634343482
     },
     "largest weight": {
-      "value": 6.96945e-05
+      "value": 6.9697e-05
     }
   },
   "proposal_comparison": [
@@ -133,7 +123,6 @@
         "low": 0.0473848694,
         "median": 0.0495578614,
         "high": 0.0518039548,
-        "mcse": 8.2061e-06,
         "true value": 0.05,
         "inside 95%": true
       },
@@ -143,17 +132,15 @@
         "low": 0.849121853,
         "median": 0.8531455841,
         "high": 0.8570888188,
-        "mcse": 1.49099e-05,
         "true value": 0.85,
         "inside 95%": true
       },
       "p0": {
         "mean": 0.5440039315,
         "sd": 0.0075736404,
-        "low": 0.5290137612,
+        "low": 0.5290137613,
         "median": 0.5439632476,
         "high": 0.5590582612,
-        "mcse": 5.53618e-05,
         "true value": 0.55,
         "inside 95%": true
       }
@@ -167,32 +154,29 @@
     },
     "posterior": {
       "theta_e": {
-        "mean": 0.3039216711,
-        "sd": 0.0042531218,
-        "low": 0.295460342,
-        "median": 0.3039475143,
-        "high": 0.3121438842,
-        "mcse": 3.12762e-05,
+        "mean": 0.30392167,
+        "sd": 0.0042531219,
+        "low": 0.2954600393,
+        "median": 0.303947859,
+        "high": 0.3121435984,
         "true value": 0.3,
         "inside 95%": true
       },
       "theta_b": {
-        "mean": 0.5544197064,
-        "sd": 0.0055412771,
-        "low": 0.5435600203,
-        "median": 0.5544218543,
-        "high": 0.5654337022,
-        "mcse": 4.06426e-05,
+        "mean": 0.5544197065,
+        "sd": 0.005541276,
+        "low": 0.5435596428,
+        "median": 0.5544219636,
+        "high": 0.5654333004,
         "true value": 0.55,
         "inside 95%": true
       },
       "p0": {
-        "mean": 0.5683613949,
-        "sd": 0.0173374665,
-        "low": 0.5342777006,
-        "median": 0.5684310857,
-        "high": 0.6019149452,
-        "mcse": 0.0001274495,
+        "mean": 0.5683613897,
+        "sd": 0.0173374702,
+        "low": 0.5342763301,
+        "median": 0.5684310902,
+        "high": 0.601913629,
         "true value": 0.55,
         "inside 95%": true
       }
@@ -210,42 +194,42 @@
   "predictive_checks": {
     "spread of skip rates": {
       "real data": 0.3583970505,
-      "simulated mean": 0.3408820727,
+      "simulated mean": 0.3408820931,
       "simulated 2.5%": 0.336791997,
       "simulated 97.5%": 0.3446759036,
       "share at least as large": 0.0
     },
     "gap after a skip": {
       "real data": 0.6133588889,
-      "simulated mean": 0.4406176945,
+      "simulated mean": 0.4406176494,
       "simulated 2.5%": 0.4287275322,
       "simulated 97.5%": 0.4523781747,
       "share at least as large": 0.0
     },
     "longest run of skips": {
       "real data": 4.7730644414,
-      "simulated mean": 3.6023059805,
+      "simulated mean": 3.6023062123,
       "simulated 2.5%": 3.4640356977,
       "simulated 97.5%": 3.7408495596,
       "share at least as large": 0.0
     },
     "gap after shuffling": {
       "real data": 0.512058151,
-      "simulated mean": 0.4406983925,
+      "simulated mean": 0.4406984438,
       "simulated 2.5%": 0.4297156151,
       "simulated 97.5%": 0.4517227872,
       "share at least as large": 0.0
     },
     "within-session gap": {
       "real data": 0.1013007379,
-      "simulated mean": -8.0698e-05,
+      "simulated mean": -8.07945e-05,
       "simulated 2.5%": -0.0046911371,
       "simulated 97.5%": 0.0043538222,
       "share at least as large": 0.0
     },
     "skip/play changes": {
       "real data": 2.7415391748,
-      "simulated mean": 3.948648586,
+      "simulated mean": 3.9486490496,
       "simulated 2.5%": 3.8527932313,
       "simulated 97.5%": 4.0445236439,
       "share at least as large": 1.0
@@ -273,80 +257,80 @@
       "simulated (Layer 2)": 0.0128187297
     }
   },
-  "score_posterior_predictive": -0.4788299963687807,
-  "score_posterior_mean": -0.478860668530373,
+  "score_posterior_predictive": -0.47882999728979986,
+  "score_posterior_mean": -0.4788606685321389,
   "prior_sensitivity": [
     {
       "parameter": "theta_e",
       "prior": "Beta(1, 1)",
-      "mean": 0.1091102311,
-      "low": 0.1046905878,
-      "high": 0.113651162,
-      "ESS share": 0.8653919182
+      "mean": 0.1091102321,
+      "low": 0.1046905225,
+      "high": 0.1136510966,
+      "ESS share": 0.8653921036
     },
     {
       "parameter": "theta_b",
       "prior": "Beta(1, 1)",
-      "mean": 0.7646086723,
-      "low": 0.7583958669,
-      "high": 0.7707753849,
-      "ESS share": 0.8653919182
+      "mean": 0.7646086728,
+      "low": 0.7583957785,
+      "high": 0.7707752985,
+      "ESS share": 0.8653921036
     },
     {
       "parameter": "p0",
       "prior": "Beta(1, 1)",
-      "mean": 0.5355165581,
-      "low": 0.519520994,
-      "high": 0.5513349614,
-      "ESS share": 0.8653919182
+      "mean": 0.5355165586,
+      "low": 0.5195208749,
+      "high": 0.5513348445,
+      "ESS share": 0.8653921036
     },
     {
       "parameter": "theta_e",
       "prior": "Beta(2, 2), main",
-      "mean": 0.1091608849,
-      "low": 0.1048059127,
-      "high": 0.1136394256,
-      "ESS share": 0.8665546079
+      "mean": 0.1091608854,
+      "low": 0.1048059617,
+      "high": 0.1136394747,
+      "ESS share": 0.8665542973
     },
     {
       "parameter": "theta_b",
       "prior": "Beta(2, 2), main",
-      "mean": 0.7645979296,
-      "low": 0.7584372019,
-      "high": 0.7707388227,
-      "ESS share": 0.8665546079
+      "mean": 0.7645979292,
+      "low": 0.7584372683,
+      "high": 0.7707388873,
+      "ESS share": 0.8665542973
     },
     {
       "parameter": "p0",
       "prior": "Beta(2, 2), main",
-      "mean": 0.5354536275,
-      "low": 0.519575092,
-      "high": 0.5515276752,
-      "ESS share": 0.8665546079
+      "mean": 0.5354536273,
+      "low": 0.5195751818,
+      "high": 0.5515277641,
+      "ESS share": 0.8665542973
     },
     {
       "parameter": "theta_e",
       "prior": "Beta(5, 5)",
-      "mean": 0.1092791901,
-      "low": 0.104821422,
-      "high": 0.1137415833,
-      "ESS share": 0.8622961918
+      "mean": 0.10927919,
+      "low": 0.1048187338,
+      "high": 0.1137416425,
+      "ESS share": 0.862296089
     },
     {
       "parameter": "theta_b",
       "prior": "Beta(5, 5)",
-      "mean": 0.7646239366,
-      "low": 0.7584400512,
-      "high": 0.7707046668,
-      "ESS share": 0.8622961918
+      "mean": 0.7646239373,
+      "low": 0.7584401298,
+      "high": 0.7707047439,
+      "ESS share": 0.862296089
     },
     {
       "parameter": "p0",
       "prior": "Beta(5, 5)",
-      "mean": 0.5355699286,
-      "low": 0.5195421533,
-      "high": 0.5515270002,
-      "ESS share": 0.8622961918
+      "mean": 0.5355699262,
+      "low": 0.5195422621,
+      "high": 0.5515271082,
+      "ESS share": 0.862296089
     }
   ]
 }

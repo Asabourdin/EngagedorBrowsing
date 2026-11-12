@@ -31,15 +31,15 @@ def em_from_starts(em, starts, skips, mask, prior):
         rows.append({
             **{name: float(value) for name, value in mode.items()},
             "log-posterior": history[-1],
-            # EM never decreases the log-posterior so a drop can only be rounding error (0 means it never drops)
-            "largest decrease": max(0.0, float(-np.diff(history).min())),
+            # EM never decreases the log-posterior so a drop can only be rounding error 
+            "largest decrease": max(0.0, float(-np.diff(history).min())), #(0 means it never drops)
         })
     table = pd.DataFrame(rows)
     best = modes[int(table["log-posterior"].idxmax())]
     return table, best, histories
 
 
-#  Log-odds scale to avoid underflow 
+#  Log-odds scale: parameters can take any real value 
 
 def to_vector(params, names):
     """Turn a dict of probabilities into a vector of log-odds"""
@@ -54,6 +54,7 @@ def to_params(phi, names):
 
 def log_beta_prior_log_odds(phi, prior, names):
     """Return the log Beta prior density written on the log-odds scale"""
+    # The Jacobian p(1-p) of the change of variables (Ch. 2; Ch. 4, Example 4.1) turns alpha-1, beta-1 into alpha, beta
     # log_expit(phi) = log p and log_expit(-phi) = log(1 - p) computed without rounding p to exactly 0 or 1 when phi is large
     phi = np.asarray(phi)
     alpha = np.array([prior[name][0] for name in names])
@@ -88,7 +89,7 @@ def student_t_draws(center, shape, df, n, rng):
     # L L^T = shape, so L z has covariance = shape when z follows N(0, I)
     L = np.linalg.cholesky(shape)
     z = rng.standard_normal((n, len(center)))
-    w = rng.chisquare(df, size=n)    # The small chi-square values give the heavy tails
+    w = rng.chisquare(df, size=n)    # the small chi-square values give the heavy tails
     return center + (z @ L.T) / np.sqrt(w / df)[:, None]
 
 
@@ -118,9 +119,9 @@ def prior_draws_log_odds(prior, names, n, rng):
 
 def normalized_weights(log_weights):
     """Turn log-weights into weights that sum to 1 (all 0 if no draw is valid)"""
-    if not np.isfinite(log_weights).any(): #if there are draw to normalise
+    if not np.isfinite(log_weights).any():  # if no draw is valid there is nothing to normalise
         return np.zeros(len(log_weights))
-    # log-sum-exp: subtract the largest log-weight before exp, so nothing overflows
+    # log-sum-exp: subtract the largest log-weight before exp so nothing overflows
     return np.exp(log_weights - logsumexp(log_weights))
 
 
@@ -145,7 +146,8 @@ def importance_sampling(log_posterior, draws, log_proposal):
 
 def importance_sampling_at_mode(log_posterior, center, n_draws, rng, df=4):
     """Importance sampling with a Student-t proposal centred at the mode, scale (-Hessian)^-1"""
-    #The Student-t has the same centre and shape than log-posterior, with heavier tails than the target 
+    # Minus the inverse Hessian at the mode is the spread of the normal approximation 
+    # the Student-t has the same centre and spread, with heavier tails
     hessian = numerical_hessian(log_posterior, center)
     shape = np.linalg.inv(-hessian)
     draws = student_t_draws(center, shape, df, n_draws, rng)
@@ -181,16 +183,8 @@ def weighted_quantile(values, weights, q):
     return values[order][np.minimum(index, len(values) - 1)]
 
 
-def monte_carlo_standard_error(values, weights):
-    """Return the Monte Carlo standard error of a self-normalized weighted mean"""
-    # Delta-method formula: sqrt(sum w^2 (h - h_hat)^2)
-    # With equal weights 1/N it is the usual sd / sqrt(N)
-    estimate = (weights * values).sum()
-    return np.sqrt((weights ** 2 * (values - estimate) ** 2).sum())
-
-
 def weighted_summary(values, weights):
-    """Return the weighted mean, sd, 2.5/50/97.5% quantiles and MC standard error"""
+    """Return the weighted mean, sd and 2.5/50/97.5% quantiles"""
     if weights.sum() == 0:
         raise ValueError("No valid draw: every weight is zero, so there is no summary")
     mean = (weights * values).sum()
@@ -201,13 +195,12 @@ def weighted_summary(values, weights):
         "low": low,
         "median": median,
         "high": high,
-        "mcse": monte_carlo_standard_error(values, weights),
     }
 
 
 def resample(draws, weights, n, rng):
     """Draw n rows from the weighted draws, giving equally weighted posterior draws"""
-    # Each row is picked with probability equal to its weight (Ch. 3)
+    #each row is picked with probability equal to its weight (so we have a discrete inverse transform)
     index = rng.choice(len(draws), size=n, p=weights)
     return draws[index]
 
@@ -221,6 +214,17 @@ def posterior_table(result, names, truth=None):
         table["true value"] = pd.Series(truth)
         table["inside 95%"] = (table["low"] <= table["true value"]) & (table["true value"] <= table["high"])
     return table
+
+
+def means_over_seeds(log_posterior, center, n_draws, seeds, names, df=4):
+    """Repeat importance sampling with each seed; return the posterior means, one row per seed"""
+    # each run has its own generator
+    rows = []
+    for seed in seeds:
+        result = importance_sampling_at_mode(log_posterior, center, n_draws,
+                                             np.random.default_rng(seed), df)
+        rows.append(posterior_table(result, names)["mean"])
+    return pd.DataFrame(rows, index=pd.Index(list(seeds), name="seed"))
 
 
 def weighted_correlation(result, names):
@@ -249,8 +253,8 @@ def predictive_checks(simulate, params_draws, lengths, rng, check):
 
 def predictive_table(simulated, observed):
     """Compare the real statistics with their simulated distribution, one row per statistic"""
-    # The last column is the share of simulations at least as large as the real
-    # value; close to 0 or 1 means the model cannot reproduce this statistic
+    # The last column is the share of simulations at least as large as the real value
+    # close to 0 or 1 means the model cannot reproduce this statistic
     return pd.DataFrame({
         "real data": pd.Series(observed),
         "simulated mean": simulated.mean(),

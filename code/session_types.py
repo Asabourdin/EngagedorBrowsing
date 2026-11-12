@@ -89,7 +89,7 @@ def em_step(params, skips, mask, prior):
     n, s = session_counts(skips, mask)
     # E-step: how much each session belongs to the engaged behaviour 
     r = type_probabilities(params, skips, mask)
-    # M-step: the Beta mode used inside the M-step where each session counts with weight r or 1 - r
+    # M-step: Beta mode (Ch. 4, Example 4.1), each session counted with weight r or 1 - r
     # p0: "successes" are engaged seshs, "trials" are all sessions
     # theta: "successes" are skips, "trials" are tracks, in sessions of that type
     new = {
@@ -119,7 +119,7 @@ def log_posterior(phi, skips, mask, prior=PRIOR):
     """Return the log-posterior at the log-odds vector phi"""
     params = to_params(phi, NAMES)
     # Swapping the labels changes nothing so the constraint theta_e < theta_b fixes the labels
-    # if values are outside we set their logodd to -inf as they have proba 0
+    # If theta_e >= theta_b, the posterior is 0 there, so its log is -inf
     if params["theta_e"] >= params["theta_b"]:
         return -np.inf
     return log_likelihood(params, skips, mask) + log_beta_prior_log_odds(phi, prior, NAMES)
