@@ -55,7 +55,7 @@ code/
 Python 3.14. From the project folder:
 
 ```bash
-pip install -r requirements.txt jupyter
+pip install -r requirements.txt
 cd code
 python prepare_yambda.py          # downloads Yambda (50M listens), writes data/sessions.csv
 ```
