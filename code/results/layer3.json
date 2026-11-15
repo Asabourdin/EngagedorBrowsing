@@ -1,0 +1,432 @@
+{
+  "em_mode": {
+    "theta_e": 0.06239443985695713,
+    "theta_b": 0.8526073641314104,
+    "p0": 0.564664849236277,
+    "q_eb": 0.036854119987641404,
+    "q_be": 0.04536839951700628
+  },
+  "posterior": {
+    "theta_e": {
+      "mean": 0.0623825291,
+      "sd": 0.0021056814,
+      "low": 0.0582937078,
+      "median": 0.0623559393,
+      "high": 0.0665929344
+    },
+    "theta_b": {
+      "mean": 0.8525768088,
+      "sd": 0.0032606405,
+      "low": 0.8461574526,
+      "median": 0.8525500332,
+      "high": 0.8590284416
+    },
+    "p0": {
+      "mean": 0.5646335076,
+      "sd": 0.0094568334,
+      "low": 0.5458616968,
+      "median": 0.564605881,
+      "high": 0.5830638569
+    },
+    "q_eb": {
+      "mean": 0.0368531128,
+      "sd": 0.0014890636,
+      "low": 0.0339843034,
+      "median": 0.0368296019,
+      "high": 0.0398068579
+    },
+    "q_be": {
+      "mean": 0.0453686298,
+      "sd": 0.0018069959,
+      "low": 0.041899875,
+      "median": 0.045365066,
+      "high": 0.0489650604
+    },
+    "mean Engaged stretch (tracks)": {
+      "mean": 27.1791386088,
+      "sd": 1.1003713528,
+      "low": 25.1212994885,
+      "median": 27.1520719037,
+      "high": 29.4253493917
+    },
+    "mean Browsing stretch (tracks)": {
+      "mean": 22.0766931007,
+      "sd": 0.8809428051,
+      "low": 20.422725768,
+      "median": 22.0433934916,
+      "high": 23.8664196381
+    },
+    "long-run share of Browsing": {
+      "mean": 0.4482355955,
+      "sd": 0.0109601796,
+      "low": 0.426712879,
+      "median": 0.4482503235,
+      "high": 0.4696661804
+    }
+  },
+  "correlation": {
+    "theta_e": {
+      "theta_e": 1.0,
+      "theta_b": 0.2971033166,
+      "p0": 0.249399374,
+      "q_eb": -0.2883791726,
+      "q_be": -0.1961438178
+    },
+    "theta_b": {
+      "theta_e": 0.2971033166,
+      "theta_b": 1.0,
+      "p0": 0.266362061,
+      "q_eb": 0.1865926359,
+      "q_be": 0.2933930783
+    },
+    "p0": {
+      "theta_e": 0.249399374,
+      "theta_b": 0.266362061,
+      "p0": 1.0,
+      "q_eb": 0.0928106377,
+      "q_be": -0.0507160555
+    },
+    "q_eb": {
+      "theta_e": -0.2883791726,
+      "theta_b": 0.1865926359,
+      "p0": 0.0928106377,
+      "q_eb": 1.0,
+      "q_be": 0.3904059418
+    },
+    "q_be": {
+      "theta_e": -0.1961438178,
+      "theta_b": 0.2933930783,
+      "p0": -0.0507160555,
+      "q_eb": 0.3904059418,
+      "q_be": 1.0
+    }
+  },
+  "monte_carlo_error": {
+    "seeds": 10,
+    "theta_e": {
+      "posterior sd": 0.0021056814,
+      "Monte Carlo error (sd over 10 seeds)": 2.14288e-05
+    },
+    "theta_b": {
+      "posterior sd": 0.0032606405,
+      "Monte Carlo error (sd over 10 seeds)": 2.66223e-05
+    },
+    "p0": {
+      "posterior sd": 0.0094568334,
+      "Monte Carlo error (sd over 10 seeds)": 0.0001029067
+    },
+    "q_eb": {
+      "posterior sd": 0.0014890636,
+      "Monte Carlo error (sd over 10 seeds)": 1.72913e-05
+    },
+    "q_be": {
+      "posterior sd": 0.0018069959,
+      "Monte Carlo error (sd over 10 seeds)": 1.59361e-05
+    }
+  },
+  "importance_sampling": {
+    "draws": {
+      "value": 20000.0
+    },
+    "df": 4,
+    "draws outside the support (weight 0)": {
+      "value": 0.0
+    },
+    "ESS": {
+      "value": 15915.8220120618
+    },
+    "ESS share": {
+      "value": 0.7957911006
+    },
+    "largest weight": {
+      "value": 8.70168e-05
+    }
+  },
+  "proposal_comparison": [
+    {
+      "proposal": "Student-t (4 df) at the mode",
+      "draws with theta_e < theta_b": 20000,
+      "ESS": 15997.5,
+      "ESS share": 0.79987,
+      "largest weight": 0.0001,
+      "q_eb mean": "0.0507"
+    },
+    {
+      "proposal": "prior Beta(2, 2)",
+      "draws with theta_e < theta_b": 9932,
+      "ESS": 1.0,
+      "ESS share": 5e-05,
+      "largest weight": 1.0,
+      "q_eb mean": "0.1733"
+    },
+    {
+      "proposal": "Normal at the mode, half the sd",
+      "draws with theta_e < theta_b": 20000,
+      "ESS": 301.3,
+      "ESS share": 0.01506,
+      "largest weight": 0.0333,
+      "q_eb mean": "0.0507"
+    }
+  ],
+  "simulated": {
+    "true": {
+      "theta_e": 0.08,
+      "theta_b": 0.8,
+      "p0": 0.55,
+      "q_eb": 0.05,
+      "q_be": 0.06
+    },
+    "posterior": {
+      "theta_e": {
+        "mean": 0.0816420795,
+        "sd": 0.0020583023,
+        "low": 0.0776975451,
+        "median": 0.0816192519,
+        "high": 0.0857312163,
+        "true value": 0.08,
+        "inside 95%": true
+      },
+      "theta_b": {
+        "mean": 0.8014983449,
+        "sd": 0.0031740895,
+        "low": 0.795175235,
+        "median": 0.8015286587,
+        "high": 0.8077050117,
+        "true value": 0.8,
+        "inside 95%": true
+      },
+      "p0": {
+        "mean": 0.5348693606,
+        "sd": 0.009138465,
+        "low": 0.5169866683,
+        "median": 0.5348963872,
+        "high": 0.5527982253,
+        "true value": 0.55,
+        "inside 95%": true
+      },
+      "q_eb": {
+        "mean": 0.050718911,
+        "sd": 0.001658561,
+        "low": 0.0474921241,
+        "median": 0.050703507,
+        "high": 0.0540412767,
+        "true value": 0.05,
+        "inside 95%": true
+      },
+      "q_be": {
+        "mean": 0.063351628,
+        "sd": 0.0020015986,
+        "low": 0.0595186302,
+        "median": 0.0633089686,
+        "high": 0.0673096619,
+        "true value": 0.06,
+        "inside 95%": true
+      }
+    }
+  },
+  "share_tracks_browsing_above_0.9": 0.3860582223414082,
+  "expected_switches_per_session": 0.5916399041269684,
+  "observed_checks": {
+    "spread of skip rates": 0.35839705054950854,
+    "gap after a skip": 0.6133588888834315,
+    "longest run of skips": 4.773064441353732,
+    "gap after shuffling": 0.5120581510201385,
+    "within-session gap": 0.10130073786329297,
+    "skip/play changes": 2.7415391747797866
+  },
+  "predictive_checks": {
+    "spread of skip rates": {
+      "real data": 0.3583970505,
+      "simulated mean": 0.3320047216,
+      "simulated 2.5%": 0.3272061385,
+      "simulated 97.5%": 0.3367879227,
+      "share at least as large": 0.0
+    },
+    "gap after a skip": {
+      "real data": 0.6133588889,
+      "simulated mean": 0.5834178768,
+      "simulated 2.5%": 0.5721766499,
+      "simulated 97.5%": 0.5943615264,
+      "share at least as large": 0.0
+    },
+    "longest run of skips": {
+      "real data": 4.7730644414,
+      "simulated mean": 4.3679624478,
+      "simulated 2.5%": 4.1946047752,
+      "simulated 97.5%": 4.525133287,
+      "share at least as large": 0.0
+    },
+    "gap after shuffling": {
+      "real data": 0.512058151,
+      "simulated mean": 0.405798257,
+      "simulated 2.5%": 0.3921565725,
+      "simulated 97.5%": 0.4183018944,
+      "share at least as large": 0.0
+    },
+    "within-session gap": {
+      "real data": 0.1013007379,
+      "simulated mean": 0.1776196198,
+      "simulated 2.5%": 0.1655621049,
+      "simulated 97.5%": 0.1904992401,
+      "share at least as large": 1.0
+    },
+    "skip/play changes": {
+      "real data": 2.7415391748,
+      "simulated mean": 2.9364098285,
+      "simulated 2.5%": 2.8501854427,
+      "simulated 97.5%": 3.0271267965,
+      "share at least as large": 1.0
+    }
+  },
+  "session_rate_groups": {
+    "no skip": {
+      "real data": 0.2211404729,
+      "simulated (Layer 2)": 0.098713491,
+      "simulated (Layer 3)": 0.1324293
+    },
+    "at most 10% skips": {
+      "real data": 0.3365785814,
+      "simulated (Layer 2)": 0.3158205841,
+      "simulated (Layer 3)": 0.3044969866
+    },
+    "30% to 70% skips": {
+      "real data": 0.2665739453,
+      "simulated (Layer 2)": 0.1610686138,
+      "simulated (Layer 3)": 0.2759503941
+    },
+    "at least 90% skips": {
+      "real data": 0.1601761706,
+      "simulated (Layer 2)": 0.0713722763,
+      "simulated (Layer 3)": 0.1026077886
+    },
+    "only skips": {
+      "real data": 0.0755679184,
+      "simulated (Layer 2)": 0.0128187297,
+      "simulated (Layer 3)": 0.0258924432
+    }
+  },
+  "score_posterior_predictive": -0.4461856847036048,
+  "score_posterior_mean": -0.4461976023818503,
+  "prior_sensitivity": [
+    {
+      "parameter": "theta_e",
+      "prior": "Beta(1, 1)",
+      "mean": 0.0623855577,
+      "low": 0.0582034183,
+      "high": 0.0665441709,
+      "ESS share": 0.7999692592
+    },
+    {
+      "parameter": "theta_b",
+      "prior": "Beta(1, 1)",
+      "mean": 0.8525673457,
+      "low": 0.8462066401,
+      "high": 0.8589112352,
+      "ESS share": 0.7999692592
+    },
+    {
+      "parameter": "p0",
+      "prior": "Beta(1, 1)",
+      "mean": 0.56472446,
+      "low": 0.5461692308,
+      "high": 0.5829550947,
+      "ESS share": 0.7999692592
+    },
+    {
+      "parameter": "q_eb",
+      "prior": "Beta(1, 1)",
+      "mean": 0.0367833001,
+      "low": 0.0339322909,
+      "high": 0.0397175474,
+      "ESS share": 0.7999692592
+    },
+    {
+      "parameter": "q_be",
+      "prior": "Beta(1, 1)",
+      "mean": 0.0453017116,
+      "low": 0.0417903451,
+      "high": 0.0488983145,
+      "ESS share": 0.7999692592
+    },
+    {
+      "parameter": "theta_e",
+      "prior": "Beta(2, 2), main",
+      "mean": 0.0623487704,
+      "low": 0.0582582704,
+      "high": 0.066564317,
+      "ESS share": 0.80163203
+    },
+    {
+      "parameter": "theta_b",
+      "prior": "Beta(2, 2), main",
+      "mean": 0.8525942361,
+      "low": 0.8463272691,
+      "high": 0.8589730941,
+      "ESS share": 0.80163203
+    },
+    {
+      "parameter": "p0",
+      "prior": "Beta(2, 2), main",
+      "mean": 0.564609966,
+      "low": 0.5461834781,
+      "high": 0.5832735016,
+      "ESS share": 0.80163203
+    },
+    {
+      "parameter": "q_eb",
+      "prior": "Beta(2, 2), main",
+      "mean": 0.0368673842,
+      "low": 0.0339983104,
+      "high": 0.0398340656,
+      "ESS share": 0.80163203
+    },
+    {
+      "parameter": "q_be",
+      "prior": "Beta(2, 2), main",
+      "mean": 0.0453859988,
+      "low": 0.0418881763,
+      "high": 0.0489843724,
+      "ESS share": 0.80163203
+    },
+    {
+      "parameter": "theta_e",
+      "prior": "Beta(5, 5)",
+      "mean": 0.0624392533,
+      "low": 0.0583452693,
+      "high": 0.0666213804,
+      "ESS share": 0.7942369959
+    },
+    {
+      "parameter": "theta_b",
+      "prior": "Beta(5, 5)",
+      "mean": 0.8526632052,
+      "low": 0.8462598806,
+      "high": 0.8588412266,
+      "ESS share": 0.7942369959
+    },
+    {
+      "parameter": "p0",
+      "prior": "Beta(5, 5)",
+      "mean": 0.5646402445,
+      "low": 0.5462114021,
+      "high": 0.5827544918,
+      "ESS share": 0.7942369959
+    },
+    {
+      "parameter": "q_eb",
+      "prior": "Beta(5, 5)",
+      "mean": 0.0370292352,
+      "low": 0.0341419483,
+      "high": 0.0399692456,
+      "ESS share": 0.7942369959
+    },
+    {
+      "parameter": "q_be",
+      "prior": "Beta(5, 5)",
+      "mean": 0.0455898979,
+      "low": 0.0420758082,
+      "high": 0.0491823815,
+      "ESS share": 0.7942369959
+    }
+  ]
+}
