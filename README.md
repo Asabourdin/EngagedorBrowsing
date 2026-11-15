@@ -34,6 +34,8 @@ Each notebook follows the same steps:
 ## Structure
 
 ```
+run_all.sh                      # Runs the whole project (see below)
+requirements.txt                # Packages, exact versions
 code/
 ├── prepare_yambda.py           # Download Yambda, build sessions and skip labels → data/sessions.csv
 ├── checks.py                   # Shared: loading, user split, six check statistics, log score
@@ -50,22 +52,25 @@ code/
 
 **Data**: a skip is a play of 50% of the track or less. A session ends after 60 s of silence or a change of context (organic / recommendation), and has 10 to 20 tracks. We keep one session per user and context.
 
-## How to run
+## Reproduce the results
 
-Python 3.14. From the project folder:
+Python 3.14. From the project folder, install the packages (exact versions in `requirements.txt`), then run everything with one command:
 
 ```bash
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cd code
-python prepare_yambda.py          # downloads Yambda (50M listens), writes data/sessions.csv
+bash run_all.sh
 ```
 
-Then run the notebooks **in order**, from the `code/` folder: each layer reads the results of the layers before it.
+`run_all.sh` runs the three notebooks in order, each from the top in a fresh kernel, and saves them with their outputs. Each layer reads the results of the layers before it, so the script stops at the first error. It needs no manual intervention.
 
 | Notebook | Run time |
 |---|---|
-| `layer1_baseline.ipynb` | about 1 min |
-| `layer2_session_types.ipynb` | about 3 min |
-| `layer3_mood_switching.ipynb` | about 15–20 min |
+| `layer1_baseline.ipynb` | 1.5 min |
+| `layer2_session_types.ipynb` | 3.5 min |
+| `layer3_mood_switching.ipynb` | 19 min |
+| **Total** | **about 23 min** |
 
-All random numbers use the seed 2026, so the results are reproducible.
+**Data.** `code/data/sessions.csv` is included in the repo, so no download is needed. To rebuild it from Yambda (a large download of 50M listens), run `bash run_all.sh --download`.
+
+**Seeds.** All random numbers use the seed 2026. Running `run_all.sh` reproduces exactly the numbers in `code/results/` and in the notebooks.

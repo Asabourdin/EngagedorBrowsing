@@ -5,4 +5,4 @@ matplotlib==3.11.2
 pyarrow==26.0.1
 huggingface_hub==2.4.0
 ipykernel==7.4.0
-jupyter
+jupyter==1.1.1
