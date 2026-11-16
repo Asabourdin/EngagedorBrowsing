@@ -2,15 +2,17 @@
 
 Do listeners have a hidden mood that drives their skips? We model listening sessions from the Yandex **Yambda** dataset with three Bayesian models of growing complexity. Each layer is kept only if it explains the real data better than the one before.
 
+Team: Aliénor Sabourdin, Anastasia Bouev-Dombre, Elise Deyris. Course: Bayesian Networks and Markov Models, CentraleSupélec & ESSEC.
+
 - **Engaged**: few skips.
 - **Browsing**: many skips.
 
 ## The three layers
 
-| Layer | Model | Inference | Test score* |
+| Layer | Model | Inference | Test score (additional analysis)* |
 |---|---|---|---|
 | 1 | One skip rate for every track (Beta-Bernoulli) | Exact (conjugate) | −0.678 |
-| 2 | One hidden mood per session, no switching (mixture of two Bernoullis) | EM + importance sampling | −0.479 |
+| 2 | One hidden type per session, no switching (mixture of two Bernoullis) | EM + importance sampling | −0.479 |
 | 3 | One hidden mood per track, can switch between tracks (hidden Markov model) | EM (Baum-Welch) + importance sampling | −0.446 |
 
 \* Average log-probability given to the tracks of new listeners. Higher is better; a fair coin scores −0.693.
@@ -29,7 +31,8 @@ Each notebook follows the same steps:
 3. Get the full posterior by importance sampling (Student-t proposal at the mode, on the log-odds scale).
 4. Run posterior predictive checks with six statistics shared by all layers.
 5. Check sensitivity to the prior.
-6. Score predictions on held-out users (20% of users, same split for all layers).
+
+**Additional analysis**: score predictions on held-out users (20% of users, same split for all layers). This is not a check of the model.
 
 ## Structure
 
@@ -50,11 +53,11 @@ code/
 └── figures/                    # PDF figures of each layer
 ```
 
-**Data**: a skip is a play of 50% of the track or less. A session ends after 60 s of silence or a change of context (organic / recommendation), and has 10 to 20 tracks. We keep one session per user and context.
+**Data**: Yambda-5B, Ploshkin et al. (2025), arXiv 2505.22238, Apache 2.0. A skip is a play of 50% of the track or less. A session ends after 60 s of silence or a change of context (organic / recommendation), and has 10 to 20 tracks. We keep one session per user and context.
 
 ## Reproduce the results
 
-Python 3.14. From the project folder, install the packages (exact versions in `requirements.txt`), then run everything with one command:
+Python 3.13 or later. From the project folder, install the packages (exact versions in `requirements.txt`), then run everything with one command:
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
