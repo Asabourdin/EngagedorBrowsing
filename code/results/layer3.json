@@ -306,7 +306,7 @@
     }
   },
   "score_posterior_predictive": -0.4461856847036048,
-  "score_posterior_mean": -0.4461976023818503,
+  "score_posterior_mean": -0.44619760238185024,
   "prior_sensitivity": [
     {
       "parameter": "theta_e",
