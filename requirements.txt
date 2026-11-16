@@ -1,6 +1,8 @@
-pandas
-pyarrow
-huggingface_hub
-scipy
-numpy
-matplotlib
+numpy==2.5.4
+scipy==1.18.1
+pandas==3.1.1
+matplotlib==3.11.2
+pyarrow==26.0.1
+huggingface_hub==2.4.0
+ipykernel==7.4.0
+jupyter==1.1.1
