@@ -77,3 +77,13 @@ bash run_all.sh
 **Data.** `code/data/sessions.csv` is included in the repo, so no download is needed. To rebuild it from Yambda (a large download of 50M listens), run `bash run_all.sh --download`.
 
 **Seeds.** All random numbers use the seed 2026. Running `run_all.sh` reproduces exactly the numbers in `code/results/` and in the notebooks.
+
+## Which file produces what in the report
+
+| Report | File |
+|---|---|
+| Data numbers (sessions, skip label, timestamp test) | `code/prepare_yambda.py` |
+| Figure 1 (skip rate by position), Layer 1 results, Appendix A | `code/layer1_baseline.ipynb` |
+| Layer 2 columns of Tables 1, 2, 3; Table 4 (proposals); Layer 2 figures of Appendix D | `code/layer2_session_types.ipynb` |
+| Layer 3 columns of Tables 1, 2, 3; Figure 3 (example sessions); Layer 3 figures of Appendix D | `code/layer3_mood_switching.ipynb` |
+| Figure 2 (Bayesian network) | drawn in LaTeX, no code |
